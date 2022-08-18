@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import GetLinkForm
 import requests
+import socket
 
 
 def main(request):
@@ -18,9 +19,8 @@ def main(request):
 
     # My Ip
     def get_ip():
-        response = requests.get('https://api64.ipify.org?format=json').json()
-        return response["ip"]
-
+        ip = requests.get('https://api.ipify.org').text
+        return ip
     def get_location():
         ip_address = get_ip()
         response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
