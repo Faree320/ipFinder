@@ -1,161 +1,96 @@
-let myData = [];
-let txt = '';
-const findIP = () => {
-  let f_ip = document.querySelector('input').value;
-  console.log({ f_ip });
-  if (f_ip !== '') {
-    fetch(`https://json.geoiplookup.io/?ip=${f_ip}`)
-      .then((response) => response.json())
-      .then((data) => {
-        let placeholders = document.getElementById('data-result');
+myData = [];
+let ip_input = document.getElementById('ip_address');
+let city_input = document.getElementById('city');
+let country_input = document.getElementById('country');
+let orginization_input = document.getElementById('orginization');
+let c_code_input = document.getElementById('c_code');
+let timezone_input = document.getElementById('timezone');
+let connection_type_input = document.getElementById('connection_type');
 
-        myData.push(data);
-        console.log(myData);
-        let out = '';
-        for (let i of myData) {
-          out += `
-            <tr>
-                <td>${i.ip}</td>
-            </tr>
-            <tr>
-                <td>${i.asn}</td>
-            </tr>
-            <tr>    
-                <td>${i.asn_number}</td>
-            </tr>
-            <tr>    
-                <td>${i.asn_org}</td>
-            <tr>
-                <td>${i.city}</td>
-            </tr>
-            <tr>
-                <td>${i.connection_type}</td>
-            </tr>
-            <tr>
-                <td>${i.continent_code}</td>
-            </tr>
-            <tr>
-                <td>${i.continent_name}</td>
-            </tr>
-            <tr>
-                <td>${i.country_code}</td>
-            </tr>
-            <tr>
-                <td>${i.country_name}</td>
-            </tr>
-            <tr>
-                <td>${i.currency_code}</td>
-            </tr>
-            <tr>
-                <td>${i.currency_name}</td>
-            </tr>
-            <tr>
-                <td>${i.district}</td>
-            </tr>
-            <tr>
-                <td>${i.hostname}</td>
-            </tr>
-            <tr>
-                <td>${i.ip}</td>
-            </tr>
-            <tr>
-                <td>${i.isp}</td>
-            </tr>
-            <tr>
-                <td>${i.latitude}</td>
-            </tr>
-            <tr>
-                <td>${i.longitude}</td>
-            </tr>
-            <tr>
-            <td>${i.org}</td>
-            </tr>
-            <tr>
-                <td>${i.region}</td>
-            </tr>
-            <tr>
-                <td>${i.timezone_name}</td>
-            </tr>
-        `;
-        }
-        placeholders.innerHTML = out;
-      });
-  } else {
-    fetch(`https://json.geoiplookup.io/`)
-      .then((response) => response.json())
-      .then((data) => {
-        let placeholders = document.getElementById('data-result');
+fetch(`https://json.geoiplookup.io/`)
+  .then((response) => response.json())
+  .then((data) => {
+    myData.push(data);
+    console.log(myData);
+    let ip;
+    let city;
+    let county;
+    let orginization;
+    let c_code;
+    let timezone;
+    let long, lati;
+    let connection_type;
 
-        myData.push(data);
-        console.log(myData);
-        let out = '';
-        for (let i of myData) {
-          out += `
-            <tr>
-                <td>${i.ip}</td>
-            </tr>
-            <tr>
-                <td>${i.asn}</td>
-            </tr>
-            <tr>    
-                <td>${i.asn_number}</td>
-            </tr>
-            <tr>    
-                <td>${i.asn_org}</td>
-            <tr>
-                <td>${i.city}</td>
-            </tr>
-            <tr>
-                <td>${i.connection_type}</td>
-            </tr>
-            <tr>
-                <td>${i.continent_code}</td>
-            </tr>
-            <tr>
-                <td>${i.continent_name}</td>
-            </tr>
-            <tr>
-                <td>${i.country_code}</td>
-            </tr>
-            <tr>
-                <td>${i.country_name}</td>
-            </tr>
-            <tr>
-                <td>${i.currency_code}</td>
-            </tr>
-            <tr>
-                <td>${i.currency_name}</td>
-            </tr>
-            <tr>
-                <td>${i.district}</td>
-            </tr>
-            <tr>
-                <td>${i.hostname}</td>
-            </tr>
-            <tr>
-                <td>${i.ip}</td>
-            </tr>
-            <tr>
-                <td>${i.isp}</td>
-            </tr>
-            <tr>
-                <td>${i.latitude}</td>
-            </tr>
-            <tr>
-                <td>${i.longitude}</td>
-            </tr>
-            <tr>
-            <td>${i.org}</td>
-            </tr>
-            <tr>
-                <td>${i.region}</td>
-            </tr>
-            <tr>
-                <td>${i.timezone_name}</td>
-            </tr>
-        `;
-        }
-        placeholders.innerHTML = out;
+    for (let i of myData) {
+      ip = i.ip;
+      city = i.city;
+      county = i.country_name;
+      orginization = i.asn_org;
+      c_code = i.country_code;
+      timezone = i.timezone_name;
+      connection_type = i.connection_type;
+
+      long = i.longitude;
+      lati = i.latitude;
+    }
+    ip_input.innerHTML = ip;
+    city_input.innerHTML = city;
+    country_input.innerHTML = county;
+    orginization_input.innerHTML = orginization;
+    c_code_input.innerHTML = c_code;
+    timezone_input.innerHTML = timezone;
+    connection_type_input.innerHTML = connection_type;
+    console.log(long);
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: lati, lng: long },
+      zoom: 8,
+    });
+
+    window.initMap = map;
+  });
+
+// AIzaSyD1PD8Z6B7gPc5cqwCmMw85Lgub6EbOijU
+// Initialize and add the map
+
+function ip_address() {
+  let input = document.querySelector('input').value;
+
+  fetch(`https://json.geoiplookup.io/?ip=${input}`)
+    .then((response) => response.json())
+    .then((data) => {
+      myData.push(data);
+      console.log(myData);
+      let ip;
+      let city;
+      let county;
+      let orginization;
+      let c_code;
+      let timezone;
+      let long, lati;
+
+      for (let i of myData) {
+        ip = i.ip;
+        city = i.city;
+        county = i.country_name;
+        orginization = i.asn_org;
+        c_code = i.country_code;
+        timezone = i.timezone_name;
+
+        long = i.longitude;
+        lati = i.latitude;
+      }
+      ip_input.innerHTML = ip;
+      city_input.innerHTML = city;
+      country_input.innerHTML = county;
+      orginization_input.innerHTML = orginization;
+      c_code_input.innerHTML = c_code;
+      timezone_input.innerHTML = timezone;
+      console.log(long);
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: lati, lng: long },
+        zoom: 8,
       });
-  }
-};
+
+      window.initMap = map;
+    });
+}
