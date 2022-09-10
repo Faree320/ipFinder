@@ -7,9 +7,7 @@ let c_code_input = document.getElementById('c_code');
 let timezone_input = document.getElementById('timezone');
 let connection_type_input = document.getElementById('connection_type');
 
-fetch(
-  `http://api.ipapi.com/api/check?access_key=8f8ebc4df14440ca8226fa4af60f995c`
-)
+fetch(`https://ipinfo.io/?token=ddfba88777bacc`)
   .then((response) => response.json())
   .then((data) => {
     myData.push(data);
@@ -22,18 +20,23 @@ fetch(
     let timezone;
     let long, lati;
     let connection_type;
+    let loc;
 
     for (let i of myData) {
       ip = i.ip;
       city = i.city;
-      county = i.country_name;
-      orginization = i.asn_org;
-      c_code = i.country_code;
-      timezone = i.timezone_name;
-      connection_type = i.connection_type;
-
-      long = i.longitude;
-      lati = i.latitude;
+      county = i.country;
+      orginization = i.org;
+      loc = i.loc;
+      c_code = i.region;
+      timezone = i.timezone;
+      connection_type = i.postal;
+      const arr = loc.split(',');
+      console.log({ arr });
+      long = parseInt(arr[1]);
+      console.log(typeof long);
+      lati = parseInt(arr[0]);
+      console.log({ lati });
     }
     ip_input.innerHTML = ip;
     city_input.innerHTML = city;
@@ -57,9 +60,7 @@ fetch(
 function ip_address() {
   let input = document.querySelector('input').value;
 
-  fetch(
-    `http://api.ipapi.com/api/${input}?access_key=8f8ebc4df14440ca8226fa4af60f995c`
-  )
+  fetch(`https://ipinfo.io/${input}?token=ddfba88777bacc`)
     .then((response) => response.json())
     .then((data) => {
       myData.push(data);
@@ -71,17 +72,20 @@ function ip_address() {
       let c_code;
       let timezone;
       let long, lati;
+      let loc;
 
       for (let i of myData) {
         ip = i.ip;
         city = i.city;
-        county = i.country_name;
-        orginization = i.asn_org;
-        c_code = i.country_code;
-        timezone = i.timezone_name;
-
-        long = i.longitude;
-        lati = i.latitude;
+        county = i.country;
+        orginization = i.org;
+        c_code = i.region;
+        timezone = i.timezone;
+        loc = i.loc;
+        const arr = loc.split(',');
+        console.log({ arr });
+        long = arr[0];
+        lati = arr[1];
       }
       ip_input.innerHTML = ip;
       city_input.innerHTML = city;
