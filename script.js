@@ -8,7 +8,7 @@ let timezone_input = document.getElementById('timezone');
 let connection_type_input = document.getElementById('connection_type');
 
 fetch(
-  `https://api.ipapi.com/api/check?access_key=8f8ebc4df14440ca8226fa4af60f995c`
+  `http://api.ipapi.com/api/check?access_key=8f8ebc4df14440ca8226fa4af60f995c`
 )
   .then((response) => response.json())
   .then((data) => {
@@ -58,7 +58,7 @@ function ip_address() {
   let input = document.querySelector('input').value;
 
   fetch(
-    `https://api.ipapi.com/api/${input}?access_key=8f8ebc4df14440ca8226fa4af60f995c`
+    `http://api.ipapi.com/api/${input}?access_key=8f8ebc4df14440ca8226fa4af60f995c`
   )
     .then((response) => response.json())
     .then((data) => {
